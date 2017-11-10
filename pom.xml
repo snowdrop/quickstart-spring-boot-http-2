@@ -10,23 +10,30 @@
     </parent>
 
     <groupId>me.snowdrop</groupId>
-    <artifactId>mvc-jsp</artifactId>
+    <artifactId>http-2</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
 
-    <description>Spring Boot JSP projects packaged as a war</description>
+    <description>Spring Boot project using HTTP/2 protocol</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
 
+        <!-- SB 1.5 -->
         <spring-boot.bom.version>1.5.8.Final</spring-boot.bom.version>
         <maven.spring-boot.plugin.version>1.5.8.RELEASE</maven.spring-boot.plugin.version>
+
+        <!-- SB 2.0
+        <spring-boot.bom.version>2.0.0.M6</spring-boot.bom.version>
+        <maven.spring-boot.plugin.version>2.0.0.M6</maven.spring-boot.plugin.version>
+        -->
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <!-- Spring Boot 1.5 -->
             <dependency>
                 <groupId>me.snowdrop</groupId>
                 <artifactId>spring-boot-bom</artifactId>
@@ -34,6 +41,15 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <!-- Spring Boot 2.0
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-parent</artifactId>
+                <version>${spring-boot.bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            -->
         </dependencies>
     </dependencyManagement>
 
@@ -43,26 +59,9 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- Hot reload -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
-        </dependency>
-        <!-- Provided -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-jasper</artifactId>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -77,6 +76,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${maven.spring-boot.plugin.version}</version>
                 <executions>
                     <execution>
                         <goals>
@@ -105,32 +105,48 @@
                                 </goals>
                             </execution>
                         </executions>
-                        <configuration>
-                            <images>
-                                <image>
-                                    <name>${project.artifactId}:%t</name>
-                                    <alias>spring-boot-mvc-jsp</alias>
-                                    <build>
-                                        <from>redhat-openjdk-18/openjdk18-openshift</from>
-                                        <assembly>
-                                            <basedir>/deployments</basedir>
-                                            <descriptorRef>artifact</descriptorRef>
-                                        </assembly>
-                                        <env>
-                                            <ARTIFACT_COPY_ARGS>*.war</ARTIFACT_COPY_ARGS>
-                                            <JAVA_APP_DIR>/deployments</JAVA_APP_DIR>
-                                        </env>
-                                        <ports>
-                                            <port>8080</port>
-                                        </ports>
-                                    </build>
-                                </image>
-                            </images>
-                        </configuration>
                     </plugin>
                 </plugins>
             </build>
         </profile>
     </profiles>
+
+    <repositories>
+        <repository>
+            <id>spring-snapshots</id>
+            <name>Spring Snapshots</name>
+            <url>https://repo.spring.io/snapshot</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>spring-snapshots</id>
+            <name>Spring Snapshots</name>
+            <url>https://repo.spring.io/snapshot</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
 
 </project>
