@@ -28,7 +28,7 @@ brew install tomcat-native
 
 ## Run locally
 ```bash
-mvn spring-boot:run -Djava.library.path=/usr/local/opt/tomcat-native/lib
+mvn spring-boot:run
 ```
 
 or
@@ -52,7 +52,7 @@ hello!
 
 - To debug
 ```bash
-mvn spring-boot:run -Djava.library.path=/usr/local/opt/tomcat-native/lib -Drun.jvmArguments="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005"
+mvn spring-boot:run -Drun.jvmArguments="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005"
 ```
 
 ## Trick to update Httpie tool to support http/2 protocol
