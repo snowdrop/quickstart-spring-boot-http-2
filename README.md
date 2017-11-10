@@ -55,11 +55,6 @@ hello!
 mvn spring-boot:run -Djava.library.path=/usr/local/opt/tomcat-native/lib -Drun.jvmArguments="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005"
 ```
 
-## Deploy project on OpenShift
-```bash
-mvn clean fabric8:deploy -Popenshift 
-```
-
 ## Trick to update Httpie tool to support http/2 protocol
 ```bash
 pip install -U httpie httpie-http2
