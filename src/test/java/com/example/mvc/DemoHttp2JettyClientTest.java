@@ -5,7 +5,7 @@ import okhttp3.Protocol;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
-import org.eclipse.jetty.http.HttpFields;
+/*import org.eclipse.jetty.http.HttpFields;
 import org.eclipse.jetty.http.HttpURI;
 import org.eclipse.jetty.http.HttpVersion;
 import org.eclipse.jetty.http.MetaData;
@@ -18,12 +18,13 @@ import org.eclipse.jetty.http2.frames.HeadersFrame;
 import org.eclipse.jetty.util.Callback;
 import org.eclipse.jetty.util.FuturePromise;
 import org.eclipse.jetty.util.Jetty;
-import org.eclipse.jetty.util.ssl.SslContextFactory;
+import org.eclipse.jetty.util.ssl.SslContextFactory;*/
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.boot.context.embedded.LocalServerPort;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.net.ssl.SSLContext;
@@ -34,23 +35,42 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.net.InetSocketAddress;
 import java.security.KeyStore;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
-import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = DemoHttp2JettyClientTest.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestPropertySource( locations = "classpath:test-application.properties" )
 public class DemoHttp2JettyClientTest {
 
-    @LocalServerPort
+    @Value( "${local.server.port}" )
     private int port;
 
+/*    @Test
+    @Ignore
+    public void simple_get()
+            throws Exception {
+        HttpClient httpClient = new HttpClient(new HttpClientTransportOverHTTP2(new HTTP2Client()), //
+                new SslContextFactory(true));
+        httpClient.start();
+
+        String json = httpClient.newRequest("https://localhost:" + port + "/") //
+                .send() //
+                .getContentAsString();
+
+        System.out.println("json:" + json);
+
+        Assert.assertEquals("Hello", json.toString());
+
+        httpClient.stop();
+    }
+
     @Test
+    @Ignore
     public void testHttp2Connect() throws Exception {
         long startTime = System.nanoTime();
 
@@ -97,10 +117,9 @@ public class DemoHttp2JettyClientTest {
         Thread.sleep(TimeUnit.SECONDS.toMillis(20));
 
         client.stop();
-    }
+    }*/
 
     @Test
-    @Ignore
     public void testHttp2WithSSLConnect() throws Exception {
         OkHttpClient client = getClientWithSSL();
         Request request = new Request.Builder().url("https://localhost:" + port + "/").build();
