@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
-@ComponentScan
 @RestController
 public class DemoHttp2Application extends SpringBootServletInitializer {
 
