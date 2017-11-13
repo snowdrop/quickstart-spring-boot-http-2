@@ -27,7 +27,7 @@ import java.security.cert.CertificateFactory;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = DemoHttp2Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class DemoHttp2ApplicationTest {
+public class DemoHttp2Application {
 
     @LocalServerPort
     private int port;
@@ -47,7 +47,6 @@ public class DemoHttp2ApplicationTest {
     }
 
     @Test
-    @Ignore
     public void testHttp2WithSSLConnect() throws Exception {
         OkHttpClient client = getClientWithSSL();
         Request request = new Request.Builder().url("https://localhost:" + port + "/").build();

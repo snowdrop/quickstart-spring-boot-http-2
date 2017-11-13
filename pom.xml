@@ -29,6 +29,8 @@
         <spring-boot.bom.version>2.0.0.M6</spring-boot.bom.version>
         <maven.spring-boot.plugin.version>2.0.0.M6</maven.spring-boot.plugin.version>
         -->
+
+        <jetty.version>9.3.4.v20151007</jetty.version>
     </properties>
 
     <dependencyManagement>
@@ -81,6 +83,17 @@
             <groupId>com.squareup.okhttp</groupId>
             <artifactId>okhttp</artifactId>
             <version>2.7.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.eclipse.jetty.http2</groupId>
+            <artifactId>http2-client</artifactId>
+            <version>${jetty.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty.http2</groupId>
+            <artifactId>http2-http-client-transport</artifactId>
+            <version>${jetty.version}</version>
         </dependency>
 
         <dependency>
