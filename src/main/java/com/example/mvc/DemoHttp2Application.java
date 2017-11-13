@@ -33,7 +33,7 @@ public class DemoHttp2Application extends SpringBootServletInitializer {
 
 	private Connector createStandardConnector() {
 		Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
-		connector.setPort(0);
+		connector.setPort(8080);
 		return connector;
 	}
 

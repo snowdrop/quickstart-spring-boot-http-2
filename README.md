@@ -112,9 +112,32 @@ hello!
 
 ## Issues
 
+- Added AprListener to resolve this issue
+
 ```bash
 2017-11-13 09:19:45.507 ERROR 18807 --- [           main] o.a.coyote.http11.Http11NioProtocol      : The upgrade handler [org.apache.coyote.http2.Http2Protocol] for [h2] only supports upgrade via ALPN but has been configured for the ["https-jsse-nio-8443"] connector that does not support ALPN.
+```
 
+- We get this error now when Spring boot is started
+```bash
+mvn spring-boot:run -Djava.library.path=/usr/local/opt/tomcat-native/lib
+...
+java.lang.UnsatisfiedLinkError: no tcnative-1 in java.library.path
+        at java.lang.ClassLoader.loadLibrary(ClassLoader.java:1867) ~[na:1.8.0_151]
+        at java.lang.Runtime.loadLibrary0(Runtime.java:870) ~[na:1.8.0_151]
+        at java.lang.System.loadLibrary(System.java:1122) ~[na:1.8.0_151]
+        at org.apache.tomcat.jni.Library.<init>(Library.java:42) ~[tomcat-embed-core-8.5.23.jar:8.5.23]
+        at org.apache.tomcat.jni.Library.initialize(Library.java:178) ~[tomcat-embed-core-8.5.23.jar:8.5.23]
+        at org.apache.catalina.core.AprLifecycleListener.init(AprLifecycleListener.java:198) [tomcat-embed-core-8.5.23.jar:8.5.23]
+        
+ll /usr/local/opt/tomcat-native/lib
+total 744
+-r--r--r--  1 dabou  admin   157K Nov 10 18:11 libtcnative-1.0.dylib
+-r--r--r--  1 dabou  admin   207K Aug 29 16:14 libtcnative-1.a
+lrwxr-xr-x  1 dabou  admin    21B Aug 29 16:14 libtcnative-1.dylib -> libtcnative-1.0.dylib
+drwxr-xr-x  3 dabou  admin   102B Nov 10 18:11 pkgconfig   
+
+The problem is described here : https://access.redhat.com/solutions/631953
 ```
 
 - To debug
