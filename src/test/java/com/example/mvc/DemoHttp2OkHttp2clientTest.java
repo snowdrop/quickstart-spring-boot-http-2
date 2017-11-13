@@ -3,7 +3,6 @@ package com.example.mvc;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import okhttp3.logging.HttpLoggingInterceptor;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.context.embedded.LocalServerPort;
@@ -27,7 +26,7 @@ import java.security.cert.CertificateFactory;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = DemoHttp2Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class DemoHttp2Application {
+public class DemoHttp2OkHttp2clientTest {
 
     @LocalServerPort
     private int port;

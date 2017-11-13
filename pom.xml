@@ -87,6 +87,7 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Jetty Http2 client -->
         <dependency>
             <groupId>org.eclipse.jetty.http2</groupId>
             <artifactId>http2-client</artifactId>

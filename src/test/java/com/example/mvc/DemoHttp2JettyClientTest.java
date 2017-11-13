@@ -1,74 +1,60 @@
 package com.example.mvc;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Protocol;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.logging.HttpLoggingInterceptor;
-/*import org.eclipse.jetty.http.HttpFields;
-import org.eclipse.jetty.http.HttpURI;
-import org.eclipse.jetty.http.HttpVersion;
-import org.eclipse.jetty.http.MetaData;
-import org.eclipse.jetty.http2.api.Session;
-import org.eclipse.jetty.http2.api.Stream;
-import org.eclipse.jetty.http2.api.server.ServerSessionListener;
+import org.eclipse.jetty.client.HttpClient;
+import org.eclipse.jetty.client.api.Request;
 import org.eclipse.jetty.http2.client.HTTP2Client;
-import org.eclipse.jetty.http2.frames.DataFrame;
-import org.eclipse.jetty.http2.frames.HeadersFrame;
-import org.eclipse.jetty.util.Callback;
-import org.eclipse.jetty.util.FuturePromise;
-import org.eclipse.jetty.util.Jetty;
-import org.eclipse.jetty.util.ssl.SslContextFactory;*/
+import org.eclipse.jetty.http2.client.http.HttpClientTransportOverHTTP2;
+import org.eclipse.jetty.util.ssl.SslContextFactory;
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.TrustManagerFactory;
-import javax.net.ssl.X509TrustManager;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.security.KeyStore;
-import java.security.cert.Certificate;
-import java.security.cert.CertificateFactory;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@TestPropertySource( locations = "classpath:test-application.properties" )
+@SpringBootTest(classes = DemoHttp2Application.class)
+@PropertySource("classpath:application.properties")
 public class DemoHttp2JettyClientTest {
 
-    @Value( "${local.server.port}" )
+    @LocalServerPort
     private int port;
 
-/*    @Test
-    @Ignore
-    public void simple_get()
-            throws Exception {
-        HttpClient httpClient = new HttpClient(new HttpClientTransportOverHTTP2(new HTTP2Client()), //
-                new SslContextFactory(true));
-        httpClient.start();
+    @Test
+    public void simple_get() {
+        HttpClient httpClient = null;
+        String response = null;
+        try {
+            Thread.currentThread().sleep(2000);
+            httpClient = new HttpClient( new HttpClientTransportOverHTTP2( new HTTP2Client() ),
+                    new SslContextFactory( false ) );
+            Assert.assertNotNull(httpClient);
+            httpClient.start();
 
-        String json = httpClient.newRequest("https://localhost:" + port + "/") //
-                .send() //
-                .getContentAsString();
+            Request request = httpClient.newRequest("http://localhost:" + port + "/");
+            Assert.assertNotNull(request);
 
-        System.out.println("json:" + json);
-
-        Assert.assertEquals("Hello", json.toString());
-
-        httpClient.stop();
+            response = request.send().getContentAsString();
+            Assert.assertEquals("Hello", response);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                httpClient.stop();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
+    /*
     @Test
     @Ignore
     public void testHttp2Connect() throws Exception {
@@ -117,7 +103,7 @@ public class DemoHttp2JettyClientTest {
         Thread.sleep(TimeUnit.SECONDS.toMillis(20));
 
         client.stop();
-    }*/
+    }
 
     @Test
     public void testHttp2WithSSLConnect() throws Exception {
@@ -160,5 +146,6 @@ public class DemoHttp2JettyClientTest {
                 .build();
         return client;
     }
+    */
 
 }
