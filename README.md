@@ -118,7 +118,8 @@ hello!
 2017-11-13 09:19:45.507 ERROR 18807 --- [           main] o.a.coyote.http11.Http11NioProtocol      : The upgrade handler [org.apache.coyote.http2.Http2Protocol] for [h2] only supports upgrade via ALPN but has been configured for the ["https-jsse-nio-8443"] connector that does not support ALPN.
 ```
 
-- We get this error now when Spring boot is started
+- This error `UnsatisfiedLinkError: no tcnative-1 in java.library.path` is reported when Spring Boot starts
+
 ```bash
 mvn spring-boot:run -Djava.library.path=/usr/local/opt/tomcat-native/lib
 ...
