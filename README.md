@@ -140,7 +140,7 @@ drwxr-xr-x  3 dabou  admin   102B Nov 10 18:11 pkgconfig
 The problem is described here : https://access.redhat.com/solutions/631953
 ```
 
-- To debug
+## To debug
 ```bash
 mvn spring-boot:run -Drun.jvmArguments="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005"
 ```
