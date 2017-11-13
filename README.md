@@ -114,6 +114,12 @@ Date: Fri, 10 Nov 2017 18:12:44 GMT
 hello!
 ```
 
+## JUnit Test
+```bash
+export DYLD_LIBRARY_PATH=/usr/local/opt/tomcat-native/lib
+mvn clean test -Pjetty-client-http2             
+```
+
 ## Issues
 
 - Added AprListener to resolve this issue
