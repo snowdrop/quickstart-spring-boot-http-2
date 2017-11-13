@@ -26,6 +26,66 @@ brew install tomcat-native
 	}
 ```
 
+## Create self signed certificate
+```bash
+keytool -genkey -keyalg RSA -alias selfsigned -keystore src/main/keystore.jks -storepass secret -validity 360 -keysize 2048
+What is your first and last name?
+  [Unknown]:  localhost
+What is the name of your organizational unit?
+  [Unknown]:  Spring Boot 
+What is the name of your organization?
+  [Unknown]:  Red Hat
+What is the name of your City or Locality?
+  [Unknown]:  Florennes
+What is the name of your State or Province?
+  [Unknown]:  Namur
+What is the two-letter country code for this unit?
+  [Unknown]:  BE
+Is CN=localhost, OU=Spring Boot, O=Red Hat, L=Florennes, ST=Namur, C=BE correct?
+  [no]:  yes
+
+Enter key password for <selfsigned>
+        (RETURN if same as keystore password):  
+Re-enter new password: 
+
+Warning:The JKS keystore uses a proprietary format. It is recommended to migrate to PKCS12 which is an industry standard format using "keytool -importkeystore -srckeystore src/main/keystore.jks -destkeystore src/main/keystore.jks -deststoretype pkcs12".
+```
+
+- To get the certificate, issue this ssl command after launching your spring boot tomcat server
+```bash
+openssl s_client -showcerts -connect localhost:8443 </dev/null
+CONNECTED(00000003)
+depth=0 C = BE, ST = Namur, L = Florennes, O = Red Hat, OU = Spring Boot, CN = localhost
+verify error:num=18:self signed certificate
+verify return:1
+depth=0 C = BE, ST = Namur, L = Florennes, O = Red Hat, OU = Spring Boot, CN = localhost
+verify return:1
+---
+Certificate chain
+ 0 s:/C=BE/ST=Namur/L=Florennes/O=Red Hat/OU=Spring Boot/CN=localhost
+   i:/C=BE/ST=Namur/L=Florennes/O=Red Hat/OU=Spring Boot/CN=localhost
+-----BEGIN CERTIFICATE-----
+MIIDeTCCAmGgAwIBAgIETUpcgDANBgkqhkiG9w0BAQsFADBtMQswCQYDVQQGEwJC
+RTEOMAwGA1UECBMFTmFtdXIxEjAQBgNVBAcTCUZsb3Jlbm5lczEQMA4GA1UEChMH
+UmVkIEhhdDEUMBIGA1UECxMLU3ByaW5nIEJvb3QxEjAQBgNVBAMTCWxvY2FsaG9z
+dDAeFw0xNzExMTMwODAxNTBaFw0xODExMDgwODAxNTBaMG0xCzAJBgNVBAYTAkJF
+MQ4wDAYDVQQIEwVOYW11cjESMBAGA1UEBxMJRmxvcmVubmVzMRAwDgYDVQQKEwdS
+ZWQgSGF0MRQwEgYDVQQLEwtTcHJpbmcgQm9vdDESMBAGA1UEAxMJbG9jYWxob3N0
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAs+tfgS8jfYRJ/6M76V/L
+1ehnJhGv2IhDi+xitiL0CbwJXuYxBaJn5L2LcIb+3551tWPBS4TML3Dndced07As
+kuJYIESxHxoiIcgXCd6YB3hTBJ448S3rGibD1rLUSI0iliE0UynPhAjdAXMUTSlX
+4rwDI5abjLkJWNDRsT4Ck+fTy1KQUokNV45QAR9Gp/myJQb5aP7ccmelmslxO/QB
+8AYW4f2XRRnCsNWhwclCAkVMQIAYQJReXzmVIUNUCOn38W2CxI4O8NuQTGs1LP8t
+iZxa/E/9w5ZKkXalpXmY1Dla2vDZsimDjCKGXOQIybLZL+WhFnsZdGCSvPcDPovo
+3QIDAQABoyEwHzAdBgNVHQ4EFgQUkUXpKHEC2dtZFwWl7+qonoa3dWkwDQYJKoZI
+hvcNAQELBQADggEBAJl69olbWoZKB66qOHFJ7DQNRt0TSG3c5QuhbzEooNGHClrw
+cdQPL+RmuFZsh7we+hRhfrHvH3J3DVzZp4rj/2h9QFM/xCfpNzH/UUzKrEKyx9z+
+k9nuXkZKPue+3Ruk5Yb0RCCB408K3wgJML6zpbQPc0drunA+uliCmc/e+VELRzCL
+/1UqCOPwRBte+EamxCGwXTgCLtLExOSZzoHzv9NH4NWko6wa4ZR+DFAmAXzJPIus
+TXHEtrRt6YUctcyv86SobddIaeyCwNIjBX32o9/0A3GIpfE/j/w29P6hmwjnD412
+Wu5Q+UEXq2D4cmag08W5CcdNCUW18u+o7P5kcFs=
+-----END CERTIFICATE-----
+```
 ## Run locally
 ```bash
 mvn spring-boot:run

@@ -1,9 +1,11 @@
 package com.example.mvc;
 
+import org.apache.catalina.connector.Connector;
 import org.apache.coyote.http2.Http2Protocol;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +20,19 @@ public class DemoHttp2Application extends SpringBootServletInitializer {
 
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(DemoHttp2Application.class, args);
+	}
+
+	@Bean
+	public EmbeddedServletContainerFactory servletContainer() {
+		TomcatEmbeddedServletContainerFactory tomcat = new TomcatEmbeddedServletContainerFactory();
+		tomcat.addAdditionalTomcatConnectors(createStandardConnector());
+		return tomcat;
+	}
+
+	private Connector createStandardConnector() {
+		Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
+		connector.setPort(0);
+		return connector;
 	}
 
 
