@@ -24,15 +24,12 @@ import java.util.concurrent.TimeoutException;
 @PropertySource("classpath:application.properties")
 public class DemoHttp2JettyClientTest {
 
-    @LocalServerPort
-    private int port;
-
     @Test
     public void simple_get() {
         HttpClient httpClient = null;
         String response = null;
+        int port = 8080;
         try {
-            Thread.currentThread().sleep(2000);
             httpClient = new HttpClient( new HttpClientTransportOverHTTP2( new HTTP2Client() ),
                     new SslContextFactory( false ) );
             Assert.assertNotNull(httpClient);
