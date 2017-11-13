@@ -30,7 +30,7 @@
         <maven.spring-boot.plugin.version>2.0.0.M6</maven.spring-boot.plugin.version>
         -->
 
-        <jetty.version>9.3.4.v20151007</jetty.version>
+        <jetty.version>9.4.6.v20170531</jetty.version>
     </properties>
 
     <dependencyManagement>
@@ -89,11 +89,13 @@
             <groupId>org.eclipse.jetty.http2</groupId>
             <artifactId>http2-client</artifactId>
             <version>${jetty.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty.http2</groupId>
             <artifactId>http2-http-client-transport</artifactId>
             <version>${jetty.version}</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
