@@ -29,6 +29,8 @@
         <spring-boot.bom.version>2.0.0.M6</spring-boot.bom.version>
         <maven.spring-boot.plugin.version>2.0.0.M6</maven.spring-boot.plugin.version>
         -->
+
+        <main.class>de.consol.labs.h2c.examples.client.okhttp.OkHttpClientExample</main.class>
     </properties>
 
     <dependencyManagement>
@@ -74,6 +76,33 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.squareup.okhttp</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>2.7.5</version>
+        </dependency>
+
+        <!-- Version to be used to avoid class not found exception with : java.lang.ClassNotFoundException: okhttp3.OkHttpClient -->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>3.4.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+        </dependency>
+
+        <!-- Jetty util provides a handy TRUST_ALL_CERTS SSL trust manager. -->
+        <!-- To get rid of this dependency, copy and paste the TRUST_ALL_CERTS implementation (15 lines of code). -->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-util</artifactId>
+            <version>9.4.6.v20170531</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -89,10 +118,18 @@
                         </goals>
                     </execution>
                 </executions>
-                <configuration>
+<!--                <configuration>
                     <jvmArguments>
-                        -Djava.library.path=/usr/local/opt/tomcat-native/lib
+                        -Djava.library.path=/usr/local/opt/tomcat-native/lib -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005
                     </jvmArguments>
+                </configuration>-->
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.20</version>
+                <configuration>
+                    <argLine>-Djava.library.path=/usr/local/opt/tomcat-native/lib</argLine>
                 </configuration>
             </plugin>
         </plugins>
