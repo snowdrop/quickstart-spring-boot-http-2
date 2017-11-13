@@ -6,21 +6,14 @@ import org.eclipse.jetty.http2.client.HTTP2Client;
 import org.eclipse.jetty.http2.client.http.HttpClientTransportOverHTTP2;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
-
-
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = DemoHttp2Application.class)
+@SpringBootTest(classes = DemoHttp2Application.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @PropertySource("classpath:application.properties")
 public class DemoHttp2JettyClientTest {
 
@@ -39,7 +32,7 @@ public class DemoHttp2JettyClientTest {
             Assert.assertNotNull(request);
 
             response = request.send().getContentAsString();
-            Assert.assertEquals("Hello", response);
+            Assert.assertEquals("hello!", response);
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
