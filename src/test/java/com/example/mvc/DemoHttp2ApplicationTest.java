@@ -2,6 +2,7 @@ package com.example.mvc;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import okhttp3.logging.HttpLoggingInterceptor;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,15 +33,21 @@ public class DemoHttp2ApplicationTest {
     private int port;
 
     @Test
-    @Ignore
     public void testHttp2Connect() throws Exception {
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder().url("http://localhost:" + port + "/").build();
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
+        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(loggingInterceptor).build();
+
+        Request request = new Request.Builder()
+                .url("http://localhost:8080/")
+                .build();
+
         Response response = client.newCall(request).execute();
         assertThat(response.protocol()).isEqualTo(Protocol.HTTP_2);
     }
 
     @Test
+    @Ignore
     public void testHttp2WithSSLConnect() throws Exception {
         OkHttpClient client = getClientWithSSL();
         Request request = new Request.Builder().url("https://localhost:" + port + "/").build();
@@ -60,7 +67,7 @@ public class DemoHttp2ApplicationTest {
             CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
             while (bis.available() > 0) {
                 Certificate cert = certificateFactory.generateCertificate(bis);
-                keyStore.setCertificateEntry("www.example.com", cert);
+                keyStore.setCertificateEntry("localhost", cert);
             }
             TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
             trustManagerFactory.init(keyStore);
@@ -72,8 +79,12 @@ public class DemoHttp2ApplicationTest {
             return null;
         }
 
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
+
         OkHttpClient client = new OkHttpClient.Builder()
                 .sslSocketFactory(sslContext.getSocketFactory(), (X509TrustManager) trustManagers[0])
+                .addInterceptor(loggingInterceptor)
                 .build();
         return client;
     }
