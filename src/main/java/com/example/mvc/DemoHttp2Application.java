@@ -45,8 +45,8 @@ public class DemoHttp2Application extends SpringBootServletInitializer {
 
 	private Connector createStandardConnector() {
 		Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
+		connector.addUpgradeProtocol(new Http2Protocol());
 		connector.setPort(8080);
-		connector.addLifecycleListener(new AprLifecycleListener());
 		return connector;
 	}
 
