@@ -97,21 +97,18 @@ mvn spring-boot:run
 or
 
 ```bash
-mvn clean package  
 export DYLD_LIBRARY_PATH=/usr/local/opt/tomcat-native/lib
-java -jar target/http-2-1.0.0-SNAPSHOT.jar
+mvn clean package  && java -jar target/http-2-1.0.0-SNAPSHOT.jar
 ```
 
 and test it
 
 ```bash
-http http://localhost:8080                                                                     
-HTTP/1.1 200 
-Content-Length: 6
-Content-Type: text/plain;charset=UTF-8
-Date: Fri, 10 Nov 2017 18:12:44 GMT
+curl -v --http2 http://localhost:8080/
 
-hello!
+or  
+
+curl -vk --http2 https://localhost:8443/
 ```
 
 ## JUnit Test
@@ -214,4 +211,32 @@ HTTP/2 200
 content-type: text/plain;charset=UTF-8
 < date: Sat, 11 Nov 2017 12:12:06 GMT
 date: Sat, 11 Nov 2017 12:12:06 GMT
+
+curl -v --http2 http://localhost:8080/ 
+*   Trying ::1...
+* TCP_NODELAY set
+* Connected to localhost (::1) port 8080 (#0)
+> GET / HTTP/1.1
+> Host: localhost:8080
+> User-Agent: curl/7.56.1
+> Accept: */*
+> Connection: Upgrade, HTTP2-Settings
+> Upgrade: h2c
+> HTTP2-Settings: AAMAAABkAARAAAAAAAIAAAAA
+> 
+< HTTP/1.1 101 
+< Connection: Upgrade
+< Upgrade: h2c
+< Date: Mon, 13 Nov 2017 18:35:30 GMT
+* Received 101
+* Using HTTP2, server supports multi-use
+* Connection state changed (HTTP/2 confirmed)
+* Copying HTTP/2 data in stream buffer to connection buffer after upgrade: len=0
+* Connection state changed (MAX_CONCURRENT_STREAMS updated)!
+< HTTP/2 200 
+< content-type: text/plain;charset=UTF-8
+< date: Mon, 13 Nov 2017 18:35:30 GMT
+< 
+* Connection #0 to host localhost left intact
+hello!%                                                 
 ```
