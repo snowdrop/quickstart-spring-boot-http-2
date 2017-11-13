@@ -87,7 +87,10 @@ Wu5Q+UEXq2D4cmag08W5CcdNCUW18u+o7P5kcFs=
 -----END CERTIFICATE-----
 ```
 ## Run locally
+
+In order to run spring Boot locally, it is required first to export the Apache tomcat Native Lib ti be used
 ```bash
+export LD_LIBRARY_PATH=/usr/local/opt/tomcat-native/lib
 mvn spring-boot:run
 ```
 
@@ -95,7 +98,8 @@ or
 
 ```bash
 mvn clean package  
-java -Djava.library.path=/usr/local/opt/tomcat-native/lib -jar target/http-2-1.0.0-SNAPSHOT.jar
+export LD_LIBRARY_PATH=/usr/local/opt/tomcat-native/lib
+java -jar target/http-2-1.0.0-SNAPSHOT.jar
 ```
 
 and test it

@@ -24,16 +24,29 @@ public class DemoHttp2Application extends SpringBootServletInitializer {
 	}
 
 	@Bean
+	public EmbeddedServletContainerCustomizer tomcatCustomizer() {
+		return (container) -> {
+			if (container instanceof TomcatEmbeddedServletContainerFactory) {
+				((TomcatEmbeddedServletContainerFactory) container)
+						.addConnectorCustomizers((connector) -> {
+							connector.addUpgradeProtocol(new Http2Protocol());
+							connector.addLifecycleListener(new AprLifecycleListener());
+						});
+			}
+		};
+	}
+
+	@Bean
 	public EmbeddedServletContainerFactory servletContainer() {
 		TomcatEmbeddedServletContainerFactory container = new TomcatEmbeddedServletContainerFactory();
 		container.addAdditionalTomcatConnectors(createStandardConnector());
-		container.addContextLifecycleListeners(new AprLifecycleListener());
 		return container;
 	}
 
 	private Connector createStandardConnector() {
 		Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
 		connector.setPort(8080);
+		connector.addLifecycleListener(new AprLifecycleListener());
 		return connector;
 	}
 
@@ -41,17 +54,5 @@ public class DemoHttp2Application extends SpringBootServletInitializer {
 	@RequestMapping
 	String hello() {
 		return "hello!";
-	}
-
-	@Bean
-	public EmbeddedServletContainerCustomizer tomcatCustomizer() {
-		return (container) -> {
-			if (container instanceof TomcatEmbeddedServletContainerFactory) {
-				((TomcatEmbeddedServletContainerFactory) container)
-						.addConnectorCustomizers((connector) -> {
-							connector.addUpgradeProtocol(new Http2Protocol());
-						});
-			}
-		};
 	}
 }

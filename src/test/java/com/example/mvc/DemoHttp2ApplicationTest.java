@@ -21,7 +21,6 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 
 
@@ -33,6 +32,7 @@ public class DemoHttp2ApplicationTest {
     private int port;
 
     @Test
+    @Ignore
     public void testHttp2Connect() throws Exception {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url("http://localhost:" + port + "/").build();
@@ -41,7 +41,6 @@ public class DemoHttp2ApplicationTest {
     }
 
     @Test
-    @Ignore
     public void testHttp2WithSSLConnect() throws Exception {
         OkHttpClient client = getClientWithSSL();
         Request request = new Request.Builder().url("https://localhost:" + port + "/").build();
