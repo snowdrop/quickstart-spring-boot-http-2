@@ -1,6 +1,7 @@
 package com.example.mvc;
 
 import org.apache.catalina.connector.Connector;
+import org.apache.catalina.core.AprLifecycleListener;
 import org.apache.coyote.http2.Http2Protocol;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -24,9 +25,10 @@ public class DemoHttp2Application extends SpringBootServletInitializer {
 
 	@Bean
 	public EmbeddedServletContainerFactory servletContainer() {
-		TomcatEmbeddedServletContainerFactory tomcat = new TomcatEmbeddedServletContainerFactory();
-		tomcat.addAdditionalTomcatConnectors(createStandardConnector());
-		return tomcat;
+		TomcatEmbeddedServletContainerFactory container = new TomcatEmbeddedServletContainerFactory();
+		container.addAdditionalTomcatConnectors(createStandardConnector());
+		container.addContextLifecycleListeners(new AprLifecycleListener());
+		return container;
 	}
 
 	private Connector createStandardConnector() {

@@ -110,6 +110,13 @@ Date: Fri, 10 Nov 2017 18:12:44 GMT
 hello!
 ```
 
+## Issues
+
+```bash
+2017-11-13 09:19:45.507 ERROR 18807 --- [           main] o.a.coyote.http11.Http11NioProtocol      : The upgrade handler [org.apache.coyote.http2.Http2Protocol] for [h2] only supports upgrade via ALPN but has been configured for the ["https-jsse-nio-8443"] connector that does not support ALPN.
+
+```
+
 - To debug
 ```bash
 mvn spring-boot:run -Drun.jvmArguments="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005"
