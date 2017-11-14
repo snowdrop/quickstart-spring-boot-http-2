@@ -31,6 +31,9 @@ import java.util.concurrent.TimeUnit;
 @PropertySource("classpath:application.properties")
 public class Http2WithJettyClientTest {
 
+    private final static String KEYSTORE_LOCATION = "src/main/resources/keystore.jks";
+    private final static String KEYSTORE_PASS = "secret";
+
     @Test
     public void testHttp2WithHttp2ClientAndHttp() throws Exception {
         long startTime = System.nanoTime();
@@ -83,30 +86,40 @@ public class Http2WithJettyClientTest {
     }
 
     @Test
-    public void testHttp2WithHttpClientAndHttp() {
-        HttpClient httpClient = null;
-        String response;
+    public void testHttp2WithHttpClientAndHttp() throws Exception {
         int port = 8080;
-        try {
-            httpClient = new HttpClient(new HttpClientTransportOverHTTP2(new HTTP2Client()),
-                    new SslContextFactory(false));
-            Assert.assertNotNull(httpClient);
-            httpClient.start();
 
-            Request request = httpClient.newRequest("http://localhost:" + port + "/");
-            Assert.assertNotNull(request);
+        HttpClient httpClient = new HttpClient(new HttpClientTransportOverHTTP2(new HTTP2Client()),
+                new SslContextFactory(false));
+        Assert.assertNotNull(httpClient);
+        httpClient.start();
 
-            response = request.send().getContentAsString();
-            Assert.assertEquals("hello!", response);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        } finally {
-            try {
-                httpClient.stop();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        Request request = httpClient.newRequest("http://localhost:" + port + "/");
+        Assert.assertNotNull(request);
+
+        String response = request.send().getContentAsString();
+        Assert.assertEquals("hello!", response);
+
+        httpClient.stop();
+    }
+
+    @Test
+    public void testHttp2WithHttpClientAndSsl() throws Exception {
+        int port = 8443;
+        SslContextFactory sslContextFactory = new SslContextFactory();
+        sslContextFactory.setKeyStorePath(KEYSTORE_LOCATION);
+        sslContextFactory.setKeyStorePassword(KEYSTORE_PASS);
+        HttpClient httpClient = new HttpClient(new HttpClientTransportOverHTTP2(new HTTP2Client()), sslContextFactory);
+        Assert.assertNotNull(httpClient);
+        httpClient.start();
+
+        Request request = httpClient.newRequest("https://localhost:" + port + "/");
+        Assert.assertNotNull(request);
+
+        String response = request.send().getContentAsString();
+        Assert.assertEquals("hello!", response);
+
+        httpClient.stop();
     }
 
 }
