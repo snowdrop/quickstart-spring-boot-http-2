@@ -1,4 +1,4 @@
-package com.example.mvc;
+package me.snowdrop.protocol;
 
 import org.apache.catalina.connector.Connector;
 import org.apache.catalina.core.AprLifecycleListener;
@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
 @RestController
-public class DemoHttp2Application extends SpringBootServletInitializer {
+public class Http2Application extends SpringBootServletInitializer {
 
 	public static void main(String[] args) throws Exception {
-		SpringApplication.run(DemoHttp2Application.class, args);
+		SpringApplication.run(Http2Application.class, args);
 	}
 
 	@Bean
