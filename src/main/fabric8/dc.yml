@@ -1,0 +1,56 @@
+kind: DeploymentConfig
+metadata:
+  labels:
+    app: http-2
+    group: me.snowdrop
+    version: 1.0.0-SNAPSHOT
+  name: http-2
+spec:
+  replicas: 1
+  selector:
+    app: http-2
+    group: me.snowdrop
+    version: 1.0.0-SNAPSHOT
+  strategy:
+    rollingParams:
+      timeoutSeconds: 3600
+    type: Rolling
+  template:
+    metadata:
+      labels:
+        app: http-2
+        group: me.snowdrop
+        version: 1.0.0-SNAPSHOT
+    spec:
+      containers:
+        - env:
+            - name: KUBERNETES_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.namespace
+          image: http-2:latest
+          imagePullPolicy: IfNotPresent
+          name: spring-boot
+          ports:
+            - containerPort: 8443
+              name: https
+              protocol: TCP
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+            - containerPort: 8778
+              name: jolokia
+              protocol: TCP
+          securityContext:
+            privileged: false
+  triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - spring-boot
+        from:
+          kind: ImageStreamTag
+          name: http-2:latest
+      type: ImageChange

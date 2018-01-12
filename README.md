@@ -83,6 +83,12 @@ export DYLD_LIBRARY_PATH=/usr/local/opt/tomcat-native/lib
 mvn clean test -Pjetty-client-http2             
 ```
 
+## Deploy on OpenShift
+```bash
+export DYLD_LIBRARY_PATH=/usr/local/opt/tomcat-native/lib
+mvn clean install fabric8:deploy -Popenshift -DskipTests=true 
+```
+
 ## Issues
 
 - Added AprListener to resolve this issue

@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: http-2
+    group: me.snowdrop
+    version: 1.0.0-SNAPSHOT
+  name: http-2
+spec:
+  ports:
+    - name: https
+      port: 8443
+      protocol: TCP
+      targetPort: 8443
+    - name: http
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: http-2
+    group: me.snowdrop
+  sessionAffinity: None
+  type: ClusterIP
